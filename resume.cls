@@ -1,89 +1,36 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{resume}[2015/05/25 An elegant Résumé class]
-\LoadClass[11pt]{article}
-
-% disable indent globally
-\setlength{\parindent}{0pt}
-% some general improvements, defines the XeTeX logo
-\RequirePackage{xltxtra}
-% use xifthen
-\RequirePackage{xifthen}
-% use fontawesome
-\RequirePackage{fontawesome}
-% use xcolor for customizing color
-\RequirePackage[usenames,dvipsnames]{xcolor}
-% loading fonts
+\ProvidesClass{resume}[2026/10/08 Academic resume]
+\LoadClass[10pt]{article}
 \RequirePackage{fontspec}
-% Main document font
-\setmainfont[
-  Path = fonts/Main/ ,
-  Extension = .otf ,
-  UprightFont = *-regular ,
-  BoldFont = *-bold ,
-  ItalicFont = *-italic ,
-  BoldItalicFont = *-bolditalic ,
-  SmallCapsFont = Fontin-SmallCaps
-]{texgyretermes}
-
-\RequirePackage[
-	a4paper,
-	left=0.7in,
-	right=0.7in,
-	top=0.50in,
-	bottom=0.5in,
-	nohead
-]{geometry}
-
+\setmainfont[Path=fonts/HarmonyOS/,BoldFont=HarmonyOS_Sans_Bold.ttf,ItalicFont=HarmonyOS_Sans_Regular.ttf,ItalicFeatures={FakeSlant=0.2}]{HarmonyOS_Sans_Regular.ttf}
+\setsansfont[Path=fonts/HarmonyOS/,BoldFont=HarmonyOS_Sans_Bold.ttf]{HarmonyOS_Sans_Regular.ttf}
+\RequirePackage[a4paper,left=1.8cm,right=1.8cm,top=1.45cm,bottom=1.45cm,nohead]{geometry}
+\RequirePackage{xcolor}
+\definecolor{accent}{HTML}{8C0000}
+\definecolor{ink}{HTML}{303438}
+\definecolor{muted}{HTML}{737980}
+\definecolor{hairline}{HTML}{DDD5D5}
+\definecolor{photoFill}{HTML}{FAF5F4}
+\RequirePackage{graphicx}
+\RequirePackage{hyperref}
+\hypersetup{colorlinks=true,urlcolor=ink,linkcolor=ink,pdfborder={0 0 0},pdftitle={卓安 | 个人学术履历},pdfauthor={卓安}}
 \RequirePackage{titlesec}
 \RequirePackage{enumitem}
-\setlist{noitemsep} % removes spacing from items but leaves space around the whole list
-%\setlist{nosep} % removes all vertical spacing within and around the list
-\setlist[itemize]{topsep=0.25em, leftmargin=1.5pc}
-\setlist[enumerate]{topsep=0.25em, leftmargin=1.5pc}
-\RequirePackage[super]{nth}
-
-\titleformat{\section}         % Customise the \section command 
-  {\Large\scshape\raggedright} % Make the \section headers large (\Large),
-                               % small capitals (\scshape) and left aligned (\raggedright)
-  {}{0em}                      % Can be used to give a prefix to all sections, like 'Section ...'
-  {}                           % Can be used to insert code before the heading
-  [\titlerule]                 % Inserts a horizontal line after the heading
-\titlespacing*{\section}{0cm}{*1}{*1}
-
-\titleformat{\subsection}
-  {\large\raggedright}
-  {}{0em}
-  {}
-\titlespacing*{\subsection}{0cm}{*1}{*0.5}
-
-\newcommand{\datedsection}[2]{%
-  \section[#1]{#1 \hfill #2}%
-}
-\newcommand{\datedsubsection}[2]{%
-  \subsection[#1]{#1 \hfill #2}%
-}
-\newcommand{\datedline}[2]{%
-  {\par #1 \hfill #2 \par}%
-}
-
-\newcommand{\name}[1]{
-  \centerline{\Huge\scshape{#1}}
-  \vspace{1.2ex}
-}
-
-\newcommand{\contactInfo}[4]{
-  \centerline{\sffamily\large{\ {#1} \textperiodcentered\ \ {#2}}
-    \ifthenelse{\isempty{#3}}%
-      { } % if {#3} is empty
-      {\textperiodcentered\ \ {#3} } % homepage, no space before \text...
-    \ifthenelse{\isempty{#4}}%
-      { } % if {#3} is empty
-      {\textperiodcentered\ \ {#4} }
-  }
-  \vspace{0.7ex}
-}
-
-\newcommand{\role}[2]{
-  {\par \textit{#1} ~ #2 \par}
-  \vspace{0.5ex}
-}
+\RequirePackage{tabularx}
+\RequirePackage{needspace}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\AtBeginDocument{\fontsize{10}{14}\selectfont\color{ink}}
+\setlist[itemize]{leftmargin=1.2em,label=\textcolor{muted}{\textbullet},topsep=3pt,itemsep=2pt,parsep=0pt,partopsep=0pt}
+\titleformat{\section}{\fontsize{12}{15}\selectfont\bfseries\color{accent}}{}{0pt}{}[\vspace{1pt}\color{hairline}{\titlerule[0.4pt]}]
+\titlespacing*{\section}{0pt}{10pt}{7pt}
+% Flexible title column keeps dates aligned without pushing long titles outside the page.
+\newcommand{\datedsubsection}[2]{\noindent\begin{tabularx}{\linewidth}{@{}X r@{}}{\fontsize{10.5}{14}\selectfont #1} & {\fontsize{9}{12}\selectfont\color{muted}#2}\end{tabularx}\par}
+\newcommand{\meta}[1]{{\fontsize{9}{12.5}\selectfont\color{muted}#1\par}}
+\newcommand{\entrygap}{\vspace{7pt}}
+\newcommand{\publicationtitle}[1]{\Needspace{7\baselineskip}{\fontsize{10}{13.5}\selectfont\bfseries #1\par}\vspace{2pt}}
+\newcommand{\authors}[1]{{\fontsize{8.7}{11.5}\selectfont\color{muted}#1\par}\vspace{2pt}}
+\newcommand{\role}[2]{\meta{#1\quad #2}}
+\newcommand{\name}[1]{{\fontsize{30}{34}\selectfont\bfseries\color{accent}#1\par}}
+\newcommand{\resumephoto}[1]{\IfFileExists{#1}{\includegraphics[width=2.025cm,height=2.7cm,keepaspectratio]{#1}}{\begingroup\setlength{\fboxsep}{0pt}\fcolorbox{hairline}{photoFill}{\parbox[c][2.7cm][c]{2.025cm}{\centering\small\color{muted}个人照片}}\endgroup}}
+\pagestyle{empty}
